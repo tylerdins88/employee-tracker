@@ -1,3 +1,8 @@
+DROP DATABASE IF EXISTS companyrecords_db;
+CREATE DATABASE companyrecords_db;
+
+USE companyrecords_db;
+
 CREATE TABLE department (
     id INT PRIMARY KEY,
     department_name VARCHAR(30) NOT NULL
