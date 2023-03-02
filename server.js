@@ -1,5 +1,27 @@
+// Node package library dependencies. 
 const express = require("express");
+const mysql = require("mysql2");
+
+// 
+const PORT = process.env.PORT || 3001;
 const app = express();
+
+// Express middleware. 
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
+// Connect to database
+const db = mysql.createConnection(
+    {
+        host: "127.0.0.1",
+        // MySQL username,
+        user: "root",
+        // MySQL Password, if using
+        password: "",
+        database: "companyrecords_db"
+    },
+    console.log(`Connected to the companyrecords_db`)
+);
 
 const mainMenu = [
     {
@@ -10,6 +32,11 @@ const mainMenu = [
             "Add Role", "View ALl Departments", "Add Department", "Quit"]
     }
 ]
+
+app.listen(PORT, () => {
+    console.log(`Server running at http://localhost:${PORT}`);
+});
+
 // I need each choice to do something
 // View all employees: show table
 // -- shows me a table with id, first_name, last_name, title, department, salary, manager or null
