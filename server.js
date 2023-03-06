@@ -4,7 +4,7 @@ const mysql = require("mysql2");
 // const inquirer = require("inquirer");
 
 // Manage our tables with this node package. 
-const table = require("console-table");
+const table = require("cli-table");
 
 // Select my port or allow for Heroku. 
 const PORT = process.env.PORT || 3001;
@@ -41,89 +41,95 @@ const mainMenu = [
     }
 ]
 
-function trackEmployees() {
-    inquirer.prompt(mainMenu)
-        .then(function (answer) {
-            switch (answer.userOptions) {
-                case "View All Employees":
-                    viewAllEmployees();
-                    break;
+// function trackEmployees() {
+//     inquirer
+//         .prompt(mainMenu)
+//         .then(function (answer) {
+//             switch (answer.userOptions) {
+//                 case "View All Employees":
+//                     viewAllEmployees();
+//                     break;
 
-                case "Add Employee":
-                    addEmployee();
-                    break;
+//                 case "Add Employee":
+//                     addEmployee();
+//                     break;
 
-                case "Update Employee Role":
-                    updateEmployeeRole();
-                    break;
+//                 case "Update Employee Role":
+//                     updateEmployeeRole();
+//                     break;
 
-                case "View All Roles":
-                    viewAllRoles();
-                    break;
+//                 case "View All Roles":
+//                     viewAllRoles();
+//                     break;
 
-                case "Add Role":
-                    addRole();
-                    break;
+//                 case "Add Role":
+//                     addRole();
+//                     break;
 
-                case "View All Departments":
-                    viewAllDepartments();
-                    break;
+//                 case "View All Departments":
+//                     viewAllDepartments();
+//                     break;
 
-                case "Add Deparment":
-                    addDepartment();
-                    break;
+//                 case "Add Deparment":
+//                     addDepartment();
+//                     break;
 
-                case "Quit":
-                    quit();
-                    break;
+//                 case "Quit":
+//                     quit();
+//                     break;
 
 
-            }
-        })
-}
+//             }
+//         })
+// }
 
-trackEmployees();
+// trackEmployees();
 
 function viewAllEmployees() {
-    db.query(`SELECT * employee.id AS ID, CONCAT(employee.first_name, " ", employee.last_name) AS Name,
-                department.department_name AS Department, role.title AS Title, role.salary AS Salary, 
-                CONCAT(boss.first_name,v" ", boss.last_name) AS Manager
-                FROM employee JOIN role ON employee.role_id = role.id
-                JOIN department ON role.department_id = department.id
-                LEFT JOIN employees AS boss ON boss.id = employee.manager_id`, function (err, results) {
+    db.query(`SELECT employee.id AS ID, CONCAT(employee.first_name, " ", employee.last_name) AS Employee,
+            role.title AS Title, department.department_name AS Department, role.salary AS Salary, 
+            CONCAT(boss.first_name, " ", boss.last_name) AS Manager
+            FROM employee JOIN role ON employee.role_id = role.id
+            JOIN department ON role.department_id = department.id
+            LEFT JOIN employee AS boss ON boss.id = employee.manager_id`, function (err, results) {
         console.table(results);
+        // trackEmployees();
     })
 }
 
-function addEmployee() {
+// function addEmployee() {
 
-};
+// };
 
-function updateEmployeeRole() {
+// function updateEmployeeRole() {
 
-};
+// };
 
-function viewAllRoles() {
+// function viewAllRoles() {
 
-};
+// };
 
-function addRole() {
+// function addRole() {
 
-};
+// };
 
-function viewAllDepartments() {
+// function viewAllDepartments() {
 
-};
+// };
 
-function addDepartment() {
+// function addDepartment() {
 
-};
+// };
 
-function quit() {
+// function quit() {
 
-};
+// };
 
 viewAllEmployees();
+
+app.get("/", (req, res) => {
+    res.status(200), json({ message: "Hello World" });
+});
 
 app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
