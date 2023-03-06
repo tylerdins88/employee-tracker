@@ -15,23 +15,22 @@ CREATE TABLE department (
 );
 
 -- Creating the roles table. 
-CREATE TABLE role (
+CREATE TABLE department_role (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
-    department_name VARCHAR(30) NOT NULL, -- link to department table department_name
-    FOREIGN KEY (department_name) REFERENCES department(id)
+    department_id INT NOT NULL, -- link to department table department_name
+    FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
 -- Creating the employees table. 
-CREATE TABLE employee (
+CREATE TABLE department_employee (
     id INT AUTO_INCREMENT PRIMARY KEY, -- link to role table id
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
     -- title VARCHAR(30) NOT NULL, -- link to role table title. 
-    department_name VARCHAR(30) NOT NULL, -- link to department table department_name
-    FOREIGN KEY (department_name) REFERENCES role(id),
-    -- salary DECIMAL(), -- link to role table salary
-    manager_id VARCHAR(), -- do i need to link this to person? 
-    FOREIGN KEY (manager_id) REFERENCES employee(id)
+    role_id INT NOT NULL, -- link to department table department_name
+    FOREIGN KEY (role_id) REFERENCES department_role(id),
+    manager_id INT, -- do i need to link this to person? 
+    FOREIGN KEY (manager_id) REFERENCES department_employee(id)
 );
