@@ -19,18 +19,20 @@ CREATE TABLE department_role (
     id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(30) NOT NULL,
     salary DECIMAL NOT NULL,
-    department_id INT NOT NULL, -- link to department table department_name
+    department_id INT NOT NULL, 
+    -- This links the department_id to the department table by the id. 
     FOREIGN KEY (department_id) REFERENCES department(id)
 );
 
 -- Creating the employees table. 
 CREATE TABLE department_employee (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- link to role table id
+    id INT AUTO_INCREMENT PRIMARY KEY,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
-    -- title VARCHAR(30) NOT NULL, -- link to role table title. 
-    role_id INT NOT NULL, -- link to department table department_name
+    role_id INT NOT NULL, 
+    -- This links the role_id to the department_role table by the id. 
     FOREIGN KEY (role_id) REFERENCES department_role(id),
-    manager_id INT, -- do i need to link this to person? 
+    manager_id INT,
+    -- This links the manager_id to this department_employee table to reference the manager. 
     FOREIGN KEY (manager_id) REFERENCES department_employee(id)
 );
