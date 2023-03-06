@@ -1,7 +1,7 @@
 // Require mysql to use it as a database, inquirer so a user can interact with that database.
 const express = require("express");
 const mysql = require("mysql2");
-// const inquirer = require("inquirer");
+const inquirer = require("inquirer");
 
 // Manage our tables with this node package. 
 const table = require("cli-table");
@@ -41,49 +41,49 @@ const mainMenu = [
     }
 ]
 
-// function trackEmployees() {
-//     inquirer
-//         .prompt(mainMenu)
-//         .then(function (answer) {
-//             switch (answer.userOptions) {
-//                 case "View All Employees":
-//                     viewAllEmployees();
-//                     break;
+function trackEmployees() {
+    inquirer
+        .prompt(mainMenu)
+        .then(function (answer) {
+            switch (answer.userOptions) {
+                case "View All Employees":
+                    viewAllEmployees();
+                    break;
 
-//                 case "Add Employee":
-//                     addEmployee();
-//                     break;
+                case "Add Employee":
+                    addEmployee();
+                    break;
 
-//                 case "Update Employee Role":
-//                     updateEmployeeRole();
-//                     break;
+                case "Update Employee Role":
+                    updateEmployeeRole();
+                    break;
 
-//                 case "View All Roles":
-//                     viewAllRoles();
-//                     break;
+                case "View All Roles":
+                    viewAllRoles();
+                    break;
 
-//                 case "Add Role":
-//                     addRole();
-//                     break;
+                case "Add Role":
+                    addRole();
+                    break;
 
-//                 case "View All Departments":
-//                     viewAllDepartments();
-//                     break;
+                case "View All Departments":
+                    viewAllDepartments();
+                    break;
 
-//                 case "Add Deparment":
-//                     addDepartment();
-//                     break;
+                case "Add Deparment":
+                    addDepartment();
+                    break;
 
-//                 case "Quit":
-//                     quit();
-//                     break;
+                case "Quit":
+                    quit();
+                    break;
 
 
-//             }
-//         })
-// }
+            }
+        })
+}
 
-// trackEmployees();
+trackEmployees();
 
 function viewAllEmployees() {
     db.query(`SELECT employee.id AS ID, CONCAT(employee.first_name, " ", employee.last_name) AS Employee,
@@ -93,7 +93,7 @@ function viewAllEmployees() {
             JOIN department ON role.department_id = department.id
             LEFT JOIN employee AS boss ON boss.id = employee.manager_id`, function (err, results) {
         console.table(results);
-        // trackEmployees();
+        trackEmployees();
     })
 }
 
@@ -124,8 +124,6 @@ function viewAllEmployees() {
 // function quit() {
 
 // };
-
-viewAllEmployees();
 
 app.get("/", (req, res) => {
     res.status(200), json({ message: "Hello World" });
