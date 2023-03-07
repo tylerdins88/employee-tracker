@@ -4,3 +4,13 @@ SELECT employee.id AS ID, CONCAT(employee.first_name, " ", employee.last_name) A
         FROM employee JOIN role ON employee.role_id = role.id
         JOIN department ON role.department_id = department.id
         LEFT JOIN employee AS boss ON boss.id = employee.manager_id
+;
+
+SELECT role.id AS ID, role.title AS Title, role.salary AS Salary, 
+        department.department_name AS Department 
+        FROM role JOIN department ON role.department_id = department.id
+;
+
+SELECT department.id AS ID, department.department_name AS Department 
+        FROM department
+;
