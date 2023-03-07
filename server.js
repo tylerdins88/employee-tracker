@@ -1,10 +1,10 @@
 // Require mysql to use it as a database, inquirer so a user can interact with that database.
-const express = require("express");
-const mysql = require("mysql2");
-const inquirer = require("inquirer");
+import express from "express";
+import mysql from "mysql2";
+import inquirer from "inquirer";
 
 // Manage our tables with this node package. 
-const table = require("cli-table");
+import table from "cli-table";
 
 // Select my port or allow for Heroku. 
 const PORT = process.env.PORT || 3001;
@@ -45,7 +45,7 @@ function trackEmployees() {
     inquirer
         .prompt(mainMenu)
         .then(function (answer) {
-            switch (answer.userOptions) {
+            switch (answer) {
                 case "View All Employees":
                     viewAllEmployees();
                     break;
@@ -83,15 +83,14 @@ function trackEmployees() {
         })
 }
 
-trackEmployees();
 
 function viewAllEmployees() {
     db.query(`SELECT employee.id AS ID, CONCAT(employee.first_name, " ", employee.last_name) AS Employee,
-            role.title AS Title, department.department_name AS Department, role.salary AS Salary, 
-            CONCAT(boss.first_name, " ", boss.last_name) AS Manager
-            FROM employee JOIN role ON employee.role_id = role.id
-            JOIN department ON role.department_id = department.id
-            LEFT JOIN employee AS boss ON boss.id = employee.manager_id`, function (err, results) {
+    role.title AS Title, department.department_name AS Department, role.salary AS Salary, 
+    CONCAT(boss.first_name, " ", boss.last_name) AS Manager
+    FROM employee JOIN role ON employee.role_id = role.id
+    JOIN department ON role.department_id = department.id
+    LEFT JOIN employee AS boss ON boss.id = employee.manager_id`, function (err, results) {
         console.table(results);
         trackEmployees();
     })
@@ -133,17 +132,19 @@ app.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}`);
 });
 
-// I need each choice to do something
-// View all employees: show table
-// -- shows me a table with id, first_name, last_name, title, department, salary, manager or null
-// add employee: write data
-// -- prompt series of questions:
-// -- What is the employees first name?
-// -- What is the employees last name?
-// -- What is the employees role? (list of choices is roles. need to update if roles is updated)
-// -- Who is the employee's manager? (list of choices from empolyee table. need to update empolyees as they change. make the key linkable)
-// -- then write answers to employee table
-// - console log that employee was added to database
+trackEmployees();
+
+    // I need each choice to do something
+    // View all employees: show table
+    // -- shows me a table with id, first_name, last_name, title, department, salary, manager or null
+    // add employee: write data
+    // -- prompt series of questions:
+    // -- What is the employees first name?
+    // -- What is the employees last name?
+    // -- What is the employees role? (list of choices is roles. need to update if roles is updated)
+    // -- Who is the employee's manager? (list of choices from empolyee table. need to update empolyees as they change. make the key linkable)
+    // -- then write answers to employee table
+    // - console log that employee was added to database
 // - back to main menu
 // update employee role: update data
 // -- prompt series of questions:
