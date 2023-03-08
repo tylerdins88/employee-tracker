@@ -1,6 +1,7 @@
 // Require mysql to use it as a database, inquirer so a user can interact with that database.
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
+const cTable = require("console.table");
 
 const addDepartment = require("./utils/addDepartment");
 const addEmployee = require("./utils/addEmployee");
