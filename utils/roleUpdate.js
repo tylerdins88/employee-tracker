@@ -15,9 +15,11 @@ const db = mysql.createConnection(
     console.log(`Connected to the companyrecords_db`)
 );
 
-function updateEmployeeRole() {
+function roleUpdate() {
 
 };
+
+module.exports = roleUpdate;
 
 // update employee role: update data
 // -- prompt series of questions:

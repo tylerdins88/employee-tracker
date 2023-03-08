@@ -15,9 +15,44 @@ const db = mysql.createConnection(
     console.log(`Connected to the companyrecords_db`)
 );
 
+const newEmployee = [
+    {
+        name: "firstname",
+        message: "What is the new employees first name?",
+        type: "input"
+    },
+    {
+        name: "lastname",
+        message: "What is the new employees last name?",
+        type: "input"
+    },
+    {
+        name: "role",
+        message: "What will be the new employees role?",
+        choice: [],
+        type: "choice"
+    },
+    {
+        name: "manager",
+        message: "Who will be the new employees manager?",
+        choice: [],
+        type: "choice"
+    }
+]
 function addEmployee() {
-
+    inquirer
+        .prompt(newEmployee)
+        .then(input => {
+            const trackEmployees = require("../server");
+            db.query(``,
+                function (err, res) {
+                    console.log(`"${input.firstname}" "${input.lastname}" has been added as a new employee.`)
+                    trackEmployees();
+                })
+        })
 };
+
+module.exports = addEmployee;
 
 // add employee: write data
 // -- prompt series of questions:

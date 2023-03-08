@@ -35,7 +35,24 @@ const newRole = [
 ];
 
 function addRole() {
-
+    db.query("SELECT department_name FROM department", (err, results) => {
+        if (err) throw err;
+        const managerArr = results.map(function (product) {
+            return product;
+        })
+    })
+    console.log(managerArr)
+    inquirer
+        .prompt(newRole)
+        .then(input => {
+            const trackEmployees = require("../server");
+            db.query(`INSERT INTO role (name) VALUES ("${input.name}", 
+            "${input.salary}", "${input.depart}")`,
+                function (err, res) {
+                    console.log(`"${input.name}" has been added as a new Role.`)
+                    trackEmployees();
+                })
+        })
 }
 
 module.exports = addRole;

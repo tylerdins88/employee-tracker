@@ -29,7 +29,7 @@ function addDepartment() {
         .then(input => {
             const trackEmployees = require("../server");
             db.query(`INSERT INTO department (name) VALUES ("${input.name}")`, function (err, res) {
-                console.log(`"${input.name}" has been added to the department table`)
+                console.log(`"${input.name}" has been added as a new department.`)
                 trackEmployees();
             })
         })
