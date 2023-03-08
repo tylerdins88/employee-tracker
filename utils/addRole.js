@@ -17,7 +17,7 @@ const db = mysql.createConnection(
 
 const newRole = [
     {
-        name: "name",
+        name: "title",
         message: "What is the name of the new role?",
         type: "input"
     },
@@ -29,29 +29,32 @@ const newRole = [
     {
         name: "depart",
         message: "What department does the role belong to?",
-        choice: [],
+        choices: [],
         type: "list"
     }
 ];
 
 function addRole() {
-    db.query("SELECT department_name FROM department", (err, results) => {
+    db.query("SELECT department.department_name FROM department", (err, results) => {
         if (err) throw err;
-        const managerArr = results.map(function (product) {
-            return product;
-        })
+        let deptArray = []
+        for (i = 0; i < results.length; i++) {
+            deptArray.push(results[i].department_name)
+        } newRole[2].choices = deptArray;
     })
-    console.log(managerArr)
+
     inquirer
         .prompt(newRole)
         .then(input => {
             const trackEmployees = require("../server");
-            db.query(`INSERT INTO role (name) VALUES ("${input.name}", 
-            "${input.salary}", "${input.depart}")`,
-                function (err, res) {
-                    console.log(`"${input.name}" has been added as a new Role.`)
+            db.query(`SELECT * FROM department WHERE department_name="${input.depart}"`, function (err, res) {
+                let depart = res[0].id
+                db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${input.title}", 
+                "${input.salary}", "${depart}")`, function (err, res) {
+                    console.log(`"${input.title}" has been added as a new Role.`)
                     trackEmployees();
                 })
+            })
         })
 }
 

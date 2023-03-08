@@ -28,7 +28,7 @@ function addDepartment() {
         .prompt(newDepartment)
         .then(input => {
             const trackEmployees = require("../server");
-            db.query(`INSERT INTO department (name) VALUES ("${input.name}")`, function (err, res) {
+            db.query(`INSERT INTO department (department_name) VALUES ("${input.name}")`, function (err, res) {
                 console.log(`"${input.name}" has been added as a new department.`)
                 trackEmployees();
             })
