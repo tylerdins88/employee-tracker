@@ -21,7 +21,7 @@ const roleChange = [
         message: "Which employee's role would you like to update?",
         choices: [],
         type: "list"
-    }
+    },
     {
         name: "role",
         message: "Which role do you want to assign to the selected employee?",
@@ -31,13 +31,14 @@ const roleChange = [
 ]
 
 function roleUpdate() {
-    db.query(`SELECT CONCAT(first_name, " ", last_name) AS employees FROM employee`, (err, results) => {
+    db.query(`SELECT CONCAT(first_name, " ", last_name) AS fullname FROM employee`, (err, results) => {
         if (err) throw err;
         let employeeArray = []
         for (i = 0; i < results.length; i++) {
-            employeeArray.push(results[i].employees)
+            employeeArray.push(results[i].fullname)
         } roleChange[0].choices = employeeArray;
     })
+
 
     db.query(`SELECT title AS role FROM role`, (err, results) => {
         if (err) throw err;
@@ -51,8 +52,22 @@ function roleUpdate() {
         .prompt(roleChange)
         .then(input => {
             const trackEmployees = require("../server");
+            let nameSplit = input.employee;
+            let split = nameSplit.split(" ");
+            let name = split[0];
 
+            db.query(`SELECT * FROM role WHERE title="${input.role}"`, function (err, res) {
+                let role = res[0].id
 
+                db.query(`UPDATE employee SET role_id="${role}" WHERE first_name="${name}"`, function (err, res) {
+                    let employeeName = res[0].id;
+
+                    db.query(`SELECT * FROM employee WHERE CONCAT(first_name, " ", last_name)="${input.employee}"`, function (err, res) {
+                        console.log(`"${employeeName}" role has been updated!`)
+                        trackEmployees();
+                    })
+                })
+            })
         })
 };
 
