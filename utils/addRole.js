@@ -61,12 +61,3 @@ function addRole() {
 }
 
 module.exports = addRole;
-
-// add role: write data
-// -- prompt series of questions:
-// -- What is the name of the role?
-// -- What is the salary of the role?
-// -- Which department does the role belong to? (list of choices is departments. needs to update if departments update)
-// -- then write answers to role table with id. (id to be used as a primary key?)
-// - console log role added to database
-// - back to main menu

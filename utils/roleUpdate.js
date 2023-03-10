@@ -14,7 +14,7 @@ const db = mysql.createConnection(
     },
     console.log(`roleUpdate connected to the companyrecords_db`)
 );
-
+// This is the object I pass into inqurier. 
 const roleChange = [
     {
         name: "employee",
@@ -30,23 +30,24 @@ const roleChange = [
     }
 ]
 
+// Here I am querying an array of employees for the choices in my inquirer. 
+db.query(`SELECT CONCAT(first_name, " ", last_name) AS fullname FROM employee`, (err, results) => {
+    if (err) throw err;
+    let employeeArray = []
+    for (i = 0; i < results.length; i++) {
+        employeeArray.push(results[i].fullname)
+    } roleChange[0].choices = employeeArray;
+})
+// Here I am querying an array of roles for the choices in inquirer. 
+db.query(`SELECT title AS role FROM role`, (err, results) => {
+    if (err) throw err;
+    let roleArrary = []
+    for (i = 0; i < results.length; i++) {
+        roleArrary.push(results[i].role)
+    } roleChange[1].choices = roleArrary;
+})
+// This is the function that updates the roles. 
 function roleUpdate() {
-    db.query(`SELECT CONCAT(first_name, " ", last_name) AS fullname FROM employee`, (err, results) => {
-        if (err) throw err;
-        let employeeArray = []
-        for (i = 0; i < results.length; i++) {
-            employeeArray.push(results[i].fullname)
-        } roleChange[0].choices = employeeArray;
-    })
-
-
-    db.query(`SELECT title AS role FROM role`, (err, results) => {
-        if (err) throw err;
-        let roleArrary = []
-        for (i = 0; i < results.length; i++) {
-            roleArrary.push(results[i].role)
-        } roleChange[1].choices = roleArrary;
-    })
 
     inquirer
         .prompt(roleChange)
@@ -60,23 +61,12 @@ function roleUpdate() {
                 let role = res[0].id
 
                 db.query(`UPDATE employee SET role_id="${role}" WHERE first_name="${name}"`, function (err, res) {
-                    let employeeName = res[0].id;
-
-                    db.query(`SELECT * FROM employee WHERE CONCAT(first_name, " ", last_name)="${input.employee}"`, function (err, res) {
-                        console.log(`"${employeeName}" role has been updated!`)
-                        trackEmployees();
-                    })
+                    console.log("Updated role for " + input.employee + ".");
+                    trackEmployees();
+                    // })
                 })
             })
         })
 };
 
 module.exports = roleUpdate;
-
-// update employee role: update data
-// -- prompt series of questions:
-// -- Which employee's role would you like to update? (list of employees from employee table)
-// -- Which role do you want to assign to the selected employee? (list of choices from roles table)
-// -- then write answer to employee table updating role. 
-// - console log that the employees role has been updated. 
-// - back to menu 

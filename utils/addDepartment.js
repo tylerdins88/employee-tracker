@@ -36,9 +36,3 @@ function addDepartment() {
 };
 
 module.exports = addDepartment;
-
-// add department: write data
-// -- prompt question, (What is the name of the department?)
-// -- then writing answer to department table with a id
-// - console log department that was added to database. 
-// - back to main menu
