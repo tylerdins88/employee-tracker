@@ -12,7 +12,7 @@ const db = mysql.createConnection(
         password: "",
         database: "companyrecords_db"
     },
-    console.log(`Connected to the companyrecords_db`)
+    console.log(`addRole Connected to the companyrecords_db`)
 );
 
 const newRole = [
@@ -35,7 +35,7 @@ const newRole = [
 ];
 
 function addRole() {
-    db.query("SELECT department.department_name FROM department", (err, results) => {
+    db.query(`SELECT department.department_name FROM department`, (err, results) => {
         if (err) throw err;
         let deptArray = []
         for (i = 0; i < results.length; i++) {
@@ -47,8 +47,10 @@ function addRole() {
         .prompt(newRole)
         .then(input => {
             const trackEmployees = require("../server");
+
             db.query(`SELECT * FROM department WHERE department_name="${input.depart}"`, function (err, res) {
                 let depart = res[0].id
+
                 db.query(`INSERT INTO role (title, salary, department_id) VALUES ("${input.title}", 
                 "${input.salary}", "${depart}")`, function (err, res) {
                     console.log(`"${input.title}" has been added as a new Role.`)

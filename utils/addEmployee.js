@@ -12,7 +12,7 @@ const db = mysql.createConnection(
         password: "",
         database: "companyrecords_db"
     },
-    console.log(`Connected to the companyrecords_db`)
+    console.log(`addEmployee connected to the companyrecords_db`)
 );
 
 const newEmployee = [
@@ -27,28 +27,54 @@ const newEmployee = [
         type: "input"
     },
     {
-        name: "role",
+        name: "title",
         message: "What will be the new employees role?",
-        choice: [],
-        type: "choice"
+        choices: [],
+        type: "list"
     },
     {
         name: "manager",
         message: "Who will be the new employees manager?",
-        choice: [],
-        type: "choice"
+        choices: [],
+        type: "list"
     }
-]
+];
+
 function addEmployee() {
+    db.query(`SELECT title FROM role`, (err, results) => {
+        if (err) throw err;
+        let roleArray = []
+        for (i = 0; i < results.length; i++) {
+            roleArray.push(results[i].title)
+        } newEmployee[2].choices = roleArray;
+    })
+
+    db.query(`SELECT CONCAT(first_name, " ", last_name) AS managers FROM employee WHERE manager_id IS NULL`, (err, results) => {
+        if (err) throw err;
+        let managerArray = []
+        for (i = 0; i < results.length; i++) {
+            managerArray.push(results[i].managers)
+        } newEmployee[3].choices = managerArray;
+    })
+
     inquirer
         .prompt(newEmployee)
         .then(input => {
             const trackEmployees = require("../server");
-            db.query(``,
-                function (err, res) {
-                    console.log(`"${input.firstname}" "${input.lastname}" has been added as a new employee.`)
-                    trackEmployees();
+
+            db.query(`SELECT * FROM role WHERE title="${input.title}"`, function (err, res) {
+                let role = res[0].id
+
+                db.query(`SELECT * FROM employee WHERE CONCAT(first_name, " ", last_name)="${input.manager}"`, function (err, res) {
+                    let manager = res[0].id
+
+                    db.query(`INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES 
+                    ("${input.firstname}", "${input.lastname}", "${role}", "${manager}")`, function (err, res) {
+                        console.log(`"${input.firstname}" has been added as a new employee.`)
+                        trackEmployees();
+                    })
                 })
+            })
         })
 };
 

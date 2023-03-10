@@ -18,7 +18,7 @@ const db = mysql.createConnection(
         password: "",
         database: "companyrecords_db"
     },
-    console.log(`Connected to the companyrecords_db`)
+    console.log(`server.js connected to the companyrecords_db`)
 );
 
 db.connect(function (err) {

@@ -12,11 +12,48 @@ const db = mysql.createConnection(
         password: "",
         database: "companyrecords_db"
     },
-    console.log(`Connected to the companyrecords_db`)
+    console.log(`roleUpdate connected to the companyrecords_db`)
 );
 
-function roleUpdate() {
+const roleChange = [
+    {
+        name: "employee",
+        message: "Which employee's role would you like to update?",
+        choices: [],
+        type: "list"
+    }
+    {
+        name: "role",
+        message: "Which role do you want to assign to the selected employee?",
+        choices: [],
+        type: "list"
+    }
+]
 
+function roleUpdate() {
+    db.query(`SELECT CONCAT(first_name, " ", last_name) AS employees FROM employee`, (err, results) => {
+        if (err) throw err;
+        let employeeArray = []
+        for (i = 0; i < results.length; i++) {
+            employeeArray.push(results[i].employees)
+        } roleChange[0].choices = employeeArray;
+    })
+
+    db.query(`SELECT title AS role FROM role`, (err, results) => {
+        if (err) throw err;
+        let roleArrary = []
+        for (i = 0; i < results.length; i++) {
+            roleArrary.push(results[i].role)
+        } roleChange[1].choices = roleArrary;
+    })
+
+    inquirer
+        .prompt(roleChange)
+        .then(input => {
+            const trackEmployees = require("../server");
+
+
+        })
 };
 
 module.exports = roleUpdate;

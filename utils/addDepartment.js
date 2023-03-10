@@ -12,7 +12,7 @@ const db = mysql.createConnection(
         password: "",
         database: "companyrecords_db"
     },
-    console.log(`Connected to the companyrecords_db`)
+    console.log(`addDeparmtment connected to the companyrecords_db`)
 );
 
 const newDepartment = [
