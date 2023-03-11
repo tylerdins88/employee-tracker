@@ -8,7 +8,7 @@ In this application we employee the use of three main node packages: console-tab
 
 Please view the following video to see the application in action: 
 
-[Video of Employee Tracker]()
+[Video of Employee Tracker](https://youtu.be/v15o7qV3Uo0)
 
 ## Installation
 
